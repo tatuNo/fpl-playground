@@ -6,7 +6,19 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 
-const { PORT } = process.env;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.use('/proxy', createProxyMiddleware({
+  target: 'https://fantasy.premierleague.com/',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy': '',
+  },
+}));
+
+app.use('/ping', (_req, res) => {
+  res.send('pong');
+});
+
+const { PROXY_PORT } = process.env;
+app.listen(PROXY_PORT, () => {
+  console.log(`Server running on port ${PROXY_PORT}`);
 });

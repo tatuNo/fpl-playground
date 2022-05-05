@@ -6,9 +6,11 @@ const App = () => {
   const [id, setId] = useState(undefined); // my id 3623724
   const [team, setTeam] = useState([]);
 
-  const handleOnClick = async () => {
+  const handleOnClick = async (e) => {
+    e.preventDefault();
     try {
-      const data = await axios.get(`https://fantasy.premierleague.com/api/entry/${id}/`);
+      // const data = await axios.get('http://localhost:3003/proxy/api/bootstrap-static/'); working
+      const data = await axios.get(`http://localhost:3003/proxy/api/entry/${id}/`);
       setTeam(data);
     } catch (error) {
       console.log(error);
