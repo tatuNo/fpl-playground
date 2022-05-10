@@ -34,7 +34,7 @@ const Fixtures = () => {
   }
 
   const parseDate = (date) => new Date(date).toLocaleString(undefined, {
-    day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit',
+    day: 'numeric', month: 'numeric', year: 'numeric',
   });
 
   const findTeamName = (id) => {
@@ -48,11 +48,12 @@ const Fixtures = () => {
   };
 
   const findFixturesByDate = (date) => {
-    const result = fixtures.filter((fixture) => fixture.kickoff_time === date);
+    const result = fixtures.filter((fixture) => parseDate(fixture.kickoff_time) === date);
     return result;
   };
 
-  const uniqueFixtureDates = [...new Set(fixtures.map((fixture) => fixture.kickoff_time))];
+  // eslint-disable-next-line max-len
+  const uniqueFixtureDates = [...new Set(fixtures.map((fixture) => parseDate(fixture.kickoff_time)))];
 
   console.log(fixtures);
   console.log(teams);
@@ -74,9 +75,9 @@ const Fixtures = () => {
       <List celled>
         {uniqueFixtureDates.map((date) => (
           <>
-            <Segment>
-              {parseDate(date)}
-            </Segment>
+            <KickOffItem>
+              <KickOffSpan>{date}</KickOffSpan>
+            </KickOffItem>
             {findFixturesByDate(date).map((fixture) => (
               <List.Item key={fixture.code}>
                 <Image src={findTeamLogoSrc(fixture.team_h)} />
@@ -94,6 +95,16 @@ const Fixtures = () => {
     </>
   );
 };
+
+const KickOffItem = styles(List.Item)`
+  &&& {
+    background-color: #D3D3D3;
+  }
+`;
+
+const KickOffSpan = styles.span`
+  font-weight: bold;
+`;
 
 const StyledContainer = styles(Container)`
   &&& {
