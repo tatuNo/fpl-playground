@@ -7,6 +7,7 @@ import {
   Container,
   List,
   Image,
+  Segment,
 } from 'semantic-ui-react';
 import styles from 'styled-components';
 
@@ -46,8 +47,16 @@ const Fixtures = () => {
     return `https://resources.premierleague.com/premierleague/badges/50/t${code}.png`;
   };
 
+  const findFixturesByDate = (date) => {
+    const result = fixtures.filter((fixture) => fixture.kickoff_time === date);
+    return result;
+  };
+
+  const uniqueFixtureDates = [...new Set(fixtures.map((fixture) => fixture.kickoff_time))];
+
   console.log(fixtures);
   console.log(teams);
+  console.log(uniqueFixtureDates);
 
   return (
     <>
@@ -63,17 +72,23 @@ const Fixtures = () => {
         </Button>
       </StyledContainer>
       <List celled>
-        {fixtures.map((fixture) => (
-          <List.Item key={fixture.code}>
-            <Image src={findTeamLogoSrc(fixture.team_h)} />
-            <List.Content>
-              <List.Header>{parseDate(fixture.kickoff_time)}</List.Header>
-              {findTeamName(fixture.team_h)}
-              VS
-              {findTeamName(fixture.team_a)}
-            </List.Content>
-            <Image src={findTeamLogoSrc(fixture.team_a)} />
-          </List.Item>
+        {uniqueFixtureDates.map((date) => (
+          <>
+            <Segment>
+              {parseDate(date)}
+            </Segment>
+            {findFixturesByDate(date).map((fixture) => (
+              <List.Item key={fixture.code}>
+                <Image src={findTeamLogoSrc(fixture.team_h)} />
+                <List.Content>
+                  {findTeamName(fixture.team_h)}
+                  VS
+                  {findTeamName(fixture.team_a)}
+                </List.Content>
+                <Image src={findTeamLogoSrc(fixture.team_a)} />
+              </List.Item>
+            ))}
+          </>
         ))}
       </List>
     </>
