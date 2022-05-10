@@ -45,7 +45,7 @@ const SecondaryHeader = styled(Header)`
 `;
 
 Heading.propTypes = {
-  mobile: PropTypes.bool.isRequired,
+  mobile: PropTypes.bool,
 };
 
 export default Heading;

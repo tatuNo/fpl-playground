@@ -14,12 +14,22 @@ const Fixtures = () => {
 
   useEffect(async () => {
     try {
-      const data = await axios.get('https://fantasy.premierleague.com/api/fixtures/?future=1');
+      const { data } = await axios.get('http://localhost:3003/proxy/api/fixtures/?future=1');
       setFixtures(data);
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+  if (!fixtures) {
+    return <div>loading...</div>;
+  }
+
+  const parseDate = (date) => new Date(date).toLocaleString(undefined, {
+    day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+
+  console.log(fixtures);
 
   return (
     <>
@@ -35,21 +45,16 @@ const Fixtures = () => {
         </Button>
       </StyledContainer>
       <List celled>
-        <List.Item>
-          <List.Content>
-            Match 1
-          </List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Content>
-            Match 2
-          </List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Content>
-            Match 3
-          </List.Content>
-        </List.Item>
+        {fixtures.map((fixture) => (
+          <List.Item key={fixture.code}>
+            <List.Content>
+              <List.Header>{parseDate(fixture.kickoff_time)}</List.Header>
+              {fixture.team_h}
+              VS
+              {fixture.team_a}
+            </List.Content>
+          </List.Item>
+        ))}
       </List>
     </>
   );
