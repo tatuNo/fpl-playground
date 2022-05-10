@@ -1,5 +1,8 @@
 {
   "extends": "airbnb",
+  "plugins": [
+    "react-hooks"
+  ],
   "rules": {
     "react/function-component-definition": [
       2,
@@ -27,6 +30,8 @@
     "no-console": 0,
     "no-unused-vars": "warn",
     "react/require-default-props": 0,
-    "array-callback-return": "off"
+    "array-callback-return": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
